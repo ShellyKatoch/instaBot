@@ -102,6 +102,21 @@ def get_post_id(insta_username):
 
  get_like_list('ishita')
 
+ def like_a_post(insta_username):
+     media_id = get_post_id(insta_username)
+     request_url = (BASE_URL + 'media/%s/likes') % (media_id)
+     payload = {"access_token": ACCESS_TOKEN}
+     print 'post request url:%s' % (request_url)
+     post_a_like = requests.post(request_url, payload).json()
+
+     if post_a_like['meta']['code'] == 200:
+         print 'like was successfull !'
+     else:
+         print 'your like was unsuccessful.Try again'
+
+
+ like_a_post('ishita')
+
 
 
 
