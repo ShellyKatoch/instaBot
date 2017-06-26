@@ -1,3 +1,4 @@
+
 import requests
 from keys import *
 import urllib
@@ -12,11 +13,6 @@ def self_info():
   print 'My info is:\n', my_info['data']['username']
 
 self_info()
-
-
-
-
-
 
 
 
