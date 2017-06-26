@@ -30,6 +30,8 @@ def get_own_post():
 
 
 get_own_post()
+
+
 def get_user_id(username):
   request_url = (BASE_URL + 'users/search?q=%access_token=%s') % (username, ACCESS_TOKEN)
   print 'Get request url: %s' % (request_url)
@@ -66,6 +68,24 @@ def get_users_post(username):
     print "Status code other than 200 received!"
 
 get_users_post('ishita')
+
+def get_post_id(insta_username):
+ user_id= get_user_id(insta_username)
+ request_url=(BASE_URL + 'users/%s/media/recent?access_token=%s') % (user_id,ACCESS_TOKEN)
+ print 'Requesting data for: %s' % (request_url)
+
+ user_media= requests.get(request_url).json()
+ if user_media['meta']['code']==200:
+   if len(user_media['data']):
+     return user_media['data'][0]['id']
+   else:
+     print 'post does not exists:'
+ else:
+   print 'Status code other than 200 received!'
+   return None
+
+ get_post_id('ishita')
+
 
 
 
