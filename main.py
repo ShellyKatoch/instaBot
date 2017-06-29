@@ -4,7 +4,7 @@ from keys import *                                                              
 
 import urllib                                                                           # Importing urlib library to download the posts..
 
-import matplotlib
+import matplotlib.pyplot as plt
 
 from sandbox_users import users                                                         # Getting the list of sandbox users to perform action..
 
@@ -91,27 +91,22 @@ def get_user_id(insta_username):
 
 #..................................................................................................#
        def get_user_info(insta_username):
-           user_id = get_user_id(insta_username)  # Calling the function get_user_id to get a user_id
+           user_id = get_user_id(insta_username)                                                       # Calling the function get_user_id to get a user_id
            if user_id == None:
                print 'User does not exist!'
                exit()
            request_url = (BASE_URL + 'users/%s?access_token=%s') % (user_id, ACCESS_TOKEN)
            print 'GET request url : %s' % (request_url)
-           user_info = requests.get(request_url).json()  # GET call to fetch user for the information
+           user_info = requests.get(request_url).json()                                                  # GET call to fetch user for the information
            if user_info['meta']['code'] == 200:
                if len(user_info['data']):
-                   # Printing a particular user full information.
+                                                                                                          # Printing a particular user full information.
                    print(colored('Full Name    : %s' % (user_info['data']['full_name']), 'red'))
                    print(colored('Username     : %s' % (user_info['data']['username']), 'red'))
                    print(colored('UserId       : %s' % (user_id), 'red'))
                    print(colored('Followed By  : %s' % (user_info['data']['counts']['followed_by']), 'red'))
                    print(colored('Follows      : %s' % (user_info['data']['counts']['follows']), 'red'))
                    print(colored('Total Posts  : %s' % (user_info['data']['counts']['media']), 'red'))
-
-                   if user_info['data']['website'] != '':  # Website of the user is given
-                       print(colored('Website      :%s' % (user_info['data']['website']), 'blue'))
-                   if user_info['data']['bio'] != '':  # Bio of the user is given
-                       print(colored('Bio          :%s' % (user_info["data"]["bio"]), 'blue'))
 
                else:
                    print(colored('User does not exist!', "red"))
@@ -132,7 +127,7 @@ def get_user_recent_post(insta_username):
         exit()
     request_url = (BASE_URL + 'users/%s/media/recent/?access_token=%s') % (user_id, ACCESS_TOKEN)
     print 'GET request url : %s' % (request_url)
-    user_media = requests.get(request_url).json()                                                                           # GET call to fetch the user recent post
+    user_media = requests.get(request_url).json()                                                        # GET call to fetch the user recent post
 
     if user_media['meta']['code'] == 200:
         if len(user_media['data']):
@@ -247,6 +242,34 @@ def get_list_of_comments(insta_username, option, post_selection):
 
 #..................................................................................................#
 
+def get_own_recently_liked():
+    request_url = (BASE_URL + 'users/self/media/liked/?access_token=%s') % (ACCESS_TOKEN)
+    print 'GET request url : %s' % (request_url)
+    own_media = requests.get(request_url).json()
+
+    if own_media['meta']['code'] == 200:
+        if len(own_media['data']):
+            image_name = own_media['data'][0]['id'] + '.jpeg'
+            image_url = own_media['data'][0]['images']['standard_resolution']['url']
+            urllib.urlretrieve(image_url, image_name)
+            if own_media['data'][0]['caption'] != 'None':
+                print(colored("Caption:",'yellow')),
+                print (colored(own_media['data'][0]['caption']['text'],'red'))
+                print(colored("Image Name:", "blue")),
+                print image_name
+            else:
+                print(colored("Image Name","blue")),
+                print image_name
+            print(colored('Your image has been downloaded!',"green"))
+        else:
+            print(colored('Post does not exist!',"red"))
+    else:
+        print(colored('Status code other than 200 received!','red'))
+
+
+#..................................................................................................#
+
+
 def get_list_of_likes(insta_username, option, post_selection):
     media_id = search_post_by_choice(insta_username, option, post_selection)
     request_url = (BASE_URL + 'media/%s/likes?access_token=%s') % (media_id, ACCESS_TOKEN)
@@ -351,7 +374,7 @@ def popular_hashtag():
     tag_name2 = raw_input(colored(
         "Choose from the category blogger<>happy,love ,blogger ,hairstyle ,tumblr ,tumblrgirl<>:- ",
         "magenta"))
-    request_url = (BASE_URL + 'tags/' + tag_name2 + '?access_token=%s') % (ACCESS_TOKEN)
+    request_url = (BASE_URL +  'tags/' + tag_name2 + '?access_token=%s') % (ACCESS_TOKEN)
     print 'GET request url : %s' % (request_url)
     popular_hash_tag = requests.get(request_url).json()
     if popular_hash_tag['meta']['code'] == 200:
@@ -412,6 +435,11 @@ def popular_hashtag():
 #..................................................................................................#
 
 
+
+def get_user_info(user_name):
+    pass
+
+
 def start_bot():
     print (colored(('-' * 100), 'red'))
     print(colored(("_/\_  " * 5), 'red')),
@@ -431,15 +459,15 @@ def start_bot():
     while choice != 'no':
         print '\n'
         print "What would you like to do further?"
-        print(colored("1:To Like a post of your choice of the user.", "magenta"))
-        print(colored("2:To Get self information ", "magenta"))
-        print(colored("3:To Get your own recent post..","magenta"))
-        print(colored("4:To get user's information", "magenta"))
-        print(colored("5:To Get the recent post of a user by username.", "magenta"))
-        print(colored("6:To Get list of likes", "magenta"))
-        print(colored("7:To like a user's post .", "magenta"))
-        print(colored("8:To post a comment on user's id", "magenta"))
-        print(colored("9:To Delete the negative comment from a post of your choice of the user.", "magenta"))
+        print(colored("1:To Like a post of the user.", "magenta"))
+        print(colored("2:To Get your own recent post..","magenta"))
+        print(colored("3:To Get the recent post of a user by username.", "magenta"))
+        print(colored("4:To Get list of likes", "magenta"))
+        print(colored("5:To like a user's post .", "magenta"))
+        print(colored("6:To post a comment on user's id", "magenta"))
+        print(colored("7:To Delete the negative comment from a post of your choice of the user.", "magenta"))
+        print(colored("8:To Get own recently liked post.", "magenta"))
+        print(colored("9:To determine images shared with a particular hash tag and plot using matplotlib.", "magenta"))
         print(colored("10:To close the application.", "magenta"))
         print "\n"
         option = int(raw_input("Your option: "))
@@ -450,39 +478,32 @@ def start_bot():
 
             if option == 1:
                 user_name = select_a_username()
-                post_a_comment(user_name, option, post_select)
-
-
+                like_user_post(user_name)
             if option == 2:
-                user_name = select_a_username()
-                get_list_of_likes(user_name, option, post_select)
+
+                get_own_post()
             if option == 3:
                 user_name = select_a_username()
-                delete_negative_comment(user_name, option, post_select)
+                get_user_recent_post(user_name)
         if option == 4:
             user_name = select_a_username()
-            get_user_recent_post(user_name)
-        if option == 5:
-            user_name = select_a_username()
-            get_user_recent_post(user_name)
+            get_list_of_likes(user_name)
 
+        if option == 5:
+                user_name = select_a_username()
+                like_user_post(user_name)
         if option == 6:
                 user_name = select_a_username()
-                get_list_of_likes(user_name)
+                post_a_comment(user_name)
         if option == 7:
                 user_name = select_a_username()
                 delete_negative_comment(user_name)
         if option == 8:
-                user_name = select_a_username()
-                get_user_recent_post(user_name)
-        if option == 9:
-                user_name = select_a_username()
-                get_user_recent_post(user_name)
-        if option == 10:
                 get_own_recently_liked()
+        if option == 9:
+            popular_hashtag()
 
-
-        if option == 11:
+        if option == 10:
             print "~~~~~~~~~~~~~~~Hope you had a good experience using instaBot~~~~~~~~~~~~~~~~~~~~~`"
             print "........................Thank You have a nice day!............................."
             exit()
