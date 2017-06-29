@@ -90,18 +90,17 @@ def get_user_id(insta_username):
 
 
 #..................................................................................................#
-
-def get_user_info(insta_username):
-           user_id = get_user_id(insta_username)                                                                   # Calling the function get_user_id to get a user_id
+       def get_user_info(insta_username):
+           user_id = get_user_id(insta_username)  # Calling the function get_user_id to get a user_id
            if user_id == None:
                print 'User does not exist!'
                exit()
            request_url = (BASE_URL + 'users/%s?access_token=%s') % (user_id, ACCESS_TOKEN)
            print 'GET request url : %s' % (request_url)
-           user_info = requests.get(request_url).json()                                                           # GET call to fetch user for the information
+           user_info = requests.get(request_url).json()  # GET call to fetch user for the information
            if user_info['meta']['code'] == 200:
                if len(user_info['data']):
-                                                                                                                 # Printing a particular user full information.
+                   # Printing a particular user full information.
                    print(colored('Full Name    : %s' % (user_info['data']['full_name']), 'red'))
                    print(colored('Username     : %s' % (user_info['data']['username']), 'red'))
                    print(colored('UserId       : %s' % (user_id), 'red'))
@@ -109,16 +108,16 @@ def get_user_info(insta_username):
                    print(colored('Follows      : %s' % (user_info['data']['counts']['follows']), 'red'))
                    print(colored('Total Posts  : %s' % (user_info['data']['counts']['media']), 'red'))
 
-                   if user_info['data']['website'] != '':                                                                 # Website of the user is given
+                   if user_info['data']['website'] != '':  # Website of the user is given
                        print(colored('Website      :%s' % (user_info['data']['website']), 'blue'))
-                   if user_info['data']['bio'] != '':                                                                     # Bio of the user is given
+                   if user_info['data']['bio'] != '':  # Bio of the user is given
                        print(colored('Bio          :%s' % (user_info["data"]["bio"]), 'blue'))
 
                else:
                    print(colored('User does not exist!', "red"))
            else:
 
-              print(colored('Status code other than 200 received!', "red"))
+               print(colored('Status code other than 200 received!', "red"))
 
 
 #..................................................................................................#
