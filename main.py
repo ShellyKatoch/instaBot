@@ -17,8 +17,6 @@ from textblob.sentiments import NaiveBayesAnalyzer                              
 
 BASE_URL = "https://api.instagram.com/v1/"                                              # Base URL common for all the requests in the file..
 
-
-
 #..................................................................................................#
 
 
@@ -33,9 +31,7 @@ def self_info():
             print(colored('Full Name    : %s' % (user_info['data']['full_name']), 'green'))
             print(colored('Username     : %s' % (user_info['data']['username']),'green'))
             print(colored('UserId       : %s' % (user_info['data']['id']), 'green'))
-            print(colored('Followed By  : %s' % (user_info['data']['counts']['followed_by']),'green'))
-            print(colored('Follows      : %s' % (user_info['data']['counts']['follows']),'green'))
-            print(colored('Total Posts  : %s' % (user_info['data']['counts']['media']),'green'))
+            
         else:
             print(colored('User does not exist!','red'))
     else:
@@ -52,7 +48,7 @@ def select_a_username():                                                        
     if insta_username not in users:
         print "Sorry this user is not present"
         print "Please select a valid user to perform action"
-        select_a_username()
+
     else:
        return insta_username
 
@@ -525,9 +521,8 @@ def start_bot():
             print "@@@@@@@@@@@THANK YOU@@@@@@@@@@@@@@@"
             print "~~~~~~~~~~~~~~~Hope you had a good experience using instaBot~~~~~~~~~~~~~~~~~~~~~~~~"
             print "........................Thank You have a nice day!............................."
-exit()
 
-
+start_bot()
 
 
 
